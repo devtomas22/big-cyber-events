@@ -2,15 +2,19 @@
 
 A curated dataset of large-scale cyber events — major intrusions, supply-chain
 compromises, ransomware incidents, zero-day exploits and critical
-infrastructure attacks — in one flat CSV.
+infrastructure attacks — as flat CSV.
 
-Data is **not populated yet**. This repo currently ships the schema and the
-empty file; rows land in later commits.
+## Layout
 
-## File
+```
+README.md
+datasets/
+  vulnerabilities.csv
+```
 
-`big-cyber-events.csv` — UTF-8, comma-separated, single header row, RFC 4180
-quoting (quote any field containing a comma or quote character).
+`datasets/vulnerabilities.csv` is the dataset: UTF-8, comma-separated, one
+header row, RFC 4180 quoting (quote any field containing a comma or quote
+character).
 
 ```
 name,cve,link
@@ -21,8 +25,10 @@ name,cve,link
 | Field  | Type   | Required | Description |
 |--------|--------|----------|-------------|
 | `name` | string | yes      | Short human-readable event name, e.g. `SolarWinds Orion supply-chain compromise`. Unique. |
-| `cve`  | string | no       | CVE identifier(s) for the tracked vulnerability, uppercase `CVE-YYYY-NNNN`. Several CVEs for one event share the field, separated by a space. Empty when no single CVE applies (ransomware campaigns, credential stuffing, OT/physical incidents) — never invented. |
+| `cve`  | string | no       | CVE identifier(s) for the tracked vulnerability, uppercase `CVE-YYYY-NNNN`. Several CVEs for one event share the field, separated by a single space. Empty when no single CVE applies (ransomware campaigns, credential stuffing, OT/physical incidents) — never invented. |
 | `link` | URL    | yes      | Absolute `https://` link to the primary public announcement or advisory: vendor bulletin, CISA/CERT notice, incident report, or the researcher's own disclosure writeup. Permalinks over news coverage; no shorteners, no tracking parameters. |
+
+Rows are append-only — new events go at the bottom, no re-sorting.
 
 ## What counts as "big"
 
@@ -49,9 +55,16 @@ scores are not criteria; reach is.
 - Where an event carries a root CVE plus per-product CVEs, all identifiers go
   in `cve` and `link` points at the root disclosure.
 
+## Contents
+
+| Event | CVEs | Basis for inclusion |
+|-------|------|---------------------|
+| Upload2Shell — Ghostscript Type 1 font loader use-after-free escaping `-dSAFER` | CVE-2026-125396 (root), CVE-2026-65640 (WordPress), CVE-2026-114727 (Roundcube) | Shared renderer beneath print, email, upload and preview paths; confirmed RCE through Roundcube mail viewing, WordPress upload, Debian 13 CUPS and Plesk. No in-the-wild exploitation reported as of 22 Nov 2026. |
+
 ## Status
 
-- [ ] Populate rows
+- [x] Schema defined, first row added
+- [ ] Further rows
 - [ ] Lightweight validation (header, URL well-formedness, CVE regex)
 
 ## License

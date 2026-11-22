@@ -1,0 +1,2 @@
+name,cve,link
+"Upload2Shell (Ghostscript Type 1 font loader use-after-free, -dSAFER escape)","CVE-2026-125396 CVE-2026-65640 CVE-2026-114727",https://pwn.ai/upload2shell
